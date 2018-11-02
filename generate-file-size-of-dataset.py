@@ -88,7 +88,24 @@ def filesize_gridftp_cmp(fs_list):
     
     plt.show()
     plt.close()
-    
+
+# generate a dataset with given file size
+def generate_file_with_size(fsizes, dir_name):
+    try:
+        if os.path.isdir(dir_name):shutil.rmtree(dir_name)
+
+        os.mkdir(dir_name)
+    except:
+        print "creat folder %s faild" % dir_name
+        return
+
+    for i, fs in enumerate(fsizes):
+        fp = open("%s/f-%06d-%d.dat" % (dir_name, i, fs), 'w')
+        for it in range(fs // 2**20):
+            fp.write('\0' * 2**20)
+        fp.write('\0' * (fs % (2**20)))
+        fp.close()
+        
 if __name__ == '__main__':
     np.random.seed(2018)
     fs_list_gridftp = gen_filesize_list_gridftp(4e10)
